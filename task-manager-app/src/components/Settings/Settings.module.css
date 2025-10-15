@@ -1,0 +1,80 @@
+/* Settings.module.css */
+.settings {
+  width: 95%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background: var(--bg-primary);
+}
+
+.settings h1 {
+  color: var(--text-primary);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.settingItem {
+  margin-bottom: 25px;
+  padding: 20px;
+  background: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: var(--card-shadow);
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.checkbox {
+  margin-right: 12px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.labelText {
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.description {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin: 0;
+  padding-left: 30px;
+}
+
+.settingItem button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--btn-primary);
+  margin-right: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 2rem;
+  width: 5rem;
+  height: 5rem;
+}
+
+.settingItem button:hover {
+  transform: translateY(-4px);
+}
+
+.settingItem button:hover span {
+  transform: scale(1.3);
+}
+
+.settingItem button:active {
+  transform: translateY(0px);
+}
+
+.settingItem button:active span {
+  transform: scale(1);
+}

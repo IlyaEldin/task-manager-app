@@ -1,0 +1,305 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 0;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.header h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: var(--gray);
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover {
+  color: var(--black);
+}
+
+/* Секции */
+.title,
+.description,
+.priorityAndDate,
+.tags,
+.subtasks {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.title h1,
+.description h1,
+.tags h1,
+.subtasks h1 {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.title input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--white);
+}
+
+.description textarea {
+  height: 75px;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--white);
+  resize: vertical;
+  font-family: inherit;
+}
+
+.title input:focus,
+.description input:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+
+/* Приоритет и дата */
+.priorityAndDate {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.formGroup h1 {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.formGroup select,
+.formGroup input[type="date"] {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--white);
+}
+
+.formGroup select:focus,
+.formGroup input[type="date"]:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+
+/* Теги и подзадачи */
+.tagsInput,
+.subtasksInput {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.tagsInput input,
+.subtasksInput input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--white);
+}
+
+.tagsInput input:focus,
+.subtasksInput input:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+
+.addButton {
+  background: var(--blue);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  width: 40px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: background-color 0.2s;
+}
+
+.addButton:hover {
+  background: var(--blue-dark);
+}
+
+.tagsList,
+.subtasksList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  min-height: 20px;
+}
+
+/* Кнопки действий */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+.cancelButton {
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--border-light);
+  background: var(--white);
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.cancelButton:hover {
+  background: var(--gray-light);
+}
+
+.submitButton {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background: var(--blue);
+  color: var(--white);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.submitButton:hover {
+  background: var(--blue-dark);
+}
+
+.tagsList {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.tagsList div {
+  padding: 4px;
+  border-radius: 6px;
+  background-color: var(--gray);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.tagsList div button {
+  border: none;
+  border-radius: 50%;
+  width: 1.2rem;
+  height: 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: var(--gray);
+  opacity: 0.4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 0.25rem;
+}
+.tagsList div button:hover {
+  opacity: 1;
+}
+
+.subtaskItem {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem;
+  background: var(--gray-light);
+  border-radius: 4px;
+  margin-bottom: 0.25rem;
+  border-radius: 8px;
+}
+
+.subtaskItem div {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.removeButton {
+  background: none;
+  border: none;
+  color: var(--gray);
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0 0.5rem;
+}
+
+.removeButton:hover {
+  color: var(--black);
+}
+
+.error {
+  margin: 0 auto;
+  margin-top: 1rem;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--status-cancelled);
+  width: 95%;
+  border-radius: 8px;
+  color: var(--white);
+  font-weight: 500;
+}
+
+.priorityAndDate select,
+input,
+input::checkmark {
+  color: var(--black);
+}
+.priorityAndDate input[type="date"]::-webkit-calendar-picker-indicator {
+  background-color: #fff;
+  border-radius: 12px;
+}

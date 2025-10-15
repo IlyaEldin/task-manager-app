@@ -1,0 +1,97 @@
+.container {
+  width: 95%;
+  margin: 0 auto;
+  background: var(--bg-primary);
+}
+
+.container h1 {
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter {
+  padding: 1rem 1rem;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 1rem;
+  box-shadow: var(--card-shadow);
+}
+
+.info {
+  padding: 10px 15px;
+  background: var(--bg-secondary);
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.tasks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 390px);
+  gap: 1rem;
+}
+
+.empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+  background: var(--card-bg);
+  border-radius: 6px;
+  box-shadow: var(--card-shadow);
+}
+
+.empty h3 {
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.reset {
+  margin-top: 1rem;
+  padding: 8px 16px;
+  background: var(--btn-primary);
+  color: var(--text-light);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.reset:hover {
+  background: var(--btn-primary-hover);
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-primary);
+  background: var(--card-bg);
+  border-radius: 6px;
+  box-shadow: var(--card-shadow);
+}
+
+.retryButton {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: var(--btn-primary);
+  color: var(--text-light);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.retryButton:hover {
+  background: var(--btn-primary-hover);
+}
