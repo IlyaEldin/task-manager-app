@@ -11,7 +11,12 @@ import { formatCreatedAt, formatDueDate } from "../../utils/dateutils";
 import { useContext, useState } from "react";
 import { ModalContext } from "../../context/ModalContext/ModalContext";
 
-export default function Task({ task, selectStatus, setSelected }) {
+export default function Task({
+  task,
+  selectStatus,
+  setSelected,
+  type = "view",
+}) {
   const { openModal, setActiveTask } = useContext(ModalContext);
   const [status, setStatus] = useState(false);
 
@@ -79,7 +84,13 @@ export default function Task({ task, selectStatus, setSelected }) {
             className={classes.progressMarker}
           ></div>
         </div>
-        <div className={classes.creationTime}>
+        <div
+          className={
+            type !== "view"
+              ? `${classes.creationTime}`
+              : `${classes.creationTime} ${classes.creationTimeNoEdit}`
+          }
+        >
           <div className={classes.datesCompact}>
             <div title='Добавлен' className={classes.dateRow}>
               <span className={classes.dateIcon}>📅</span>
@@ -95,15 +106,19 @@ export default function Task({ task, selectStatus, setSelected }) {
             </div>
           </div>
         </div>
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            openModal("updateStatus");
-          }}
-          className={classes.updBtn}
-        >
-          Редактировать
-        </button>
+        {type !== "view" ? (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              openModal("updateStatus");
+            }}
+            className={classes.updBtn}
+          >
+            Редактировать
+          </button>
+        ) : (
+          ""
+        )}
       </div>
     </>
   );

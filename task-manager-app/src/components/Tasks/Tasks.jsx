@@ -202,6 +202,7 @@ export default function Tasks() {
         ) : (
           filteredTasks.map((task) => (
             <Task
+              type='editable'
               selectStatus={selectStatus} //стоит ли выделение
               setSelected={setSelected} //для добавления в массив id удаленич
               key={task.id}
