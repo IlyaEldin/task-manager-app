@@ -6,6 +6,9 @@
   padding: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  min-width: 280px;
+  max-width: 330px;
+  position: relative;
 }
 
 .container:hover {
@@ -68,6 +71,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+  margin-bottom: 3rem;
 }
 
 .creationTime img {
@@ -106,6 +110,9 @@
 }
 
 .updBtn {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
   margin-top: 1rem;
   padding: 0.5rem;
   border: 1px solid var(--border-light);
