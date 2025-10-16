@@ -1,23 +1,34 @@
 import classes from "./ModalAddTask.module.css";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useFormTask, FORM_KEY } from "../../hooks/useFormTask";
 
-export default function ModalAddTask({ onClose, onAddTask }) {
+export default function ModalAddTask({
+  onClose,
+  onAddTask,
+  type = "add",
+  task = null,
+  updateTask,
+}) {
   const tagRef = useRef();
   const subtaskRef = useRef();
   const [error, setError] = useState("");
+  const { formData, setFormData, resetForm, changeForm, deleteFromTheArray } =
+    useFormTask();
 
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    priority: "medium",
-    dueDate: "",
-    tags: [],
-    subtasks: [],
-  });
+  useEffect(() => {
+    if (task) {
+      setFormData(task);
+    }
+  }, [setFormData, task]);
 
   const addNewTask = () => {
     if (!formData.title) {
       setError("Название обязательно");
+      return;
+    }
+
+    if (formData.subtasks.length === 0) {
+      setError("Подзадачи обязательны");
       return;
     }
 
@@ -33,7 +44,8 @@ export default function ModalAddTask({ onClose, onAddTask }) {
           completed: false,
         })),
       };
-      onAddTask(newTask);
+      resetForm();
+      type === "edit" ? updateTask(formData) : onAddTask(newTask);
       onClose();
     } else {
       setError("Подзадачи обязательны");
@@ -44,10 +56,7 @@ export default function ModalAddTask({ onClose, onAddTask }) {
   const handleAddTag = () => {
     const newTag = tagRef.current.value.trim();
     if (newTag && !formData.tags.includes(newTag)) {
-      setFormData((prev) => ({
-        ...prev,
-        tags: [...prev.tags, newTag],
-      }));
+      changeForm(FORM_KEY.tags, newTag);
       tagRef.current.value = "";
     }
   };
@@ -56,7 +65,11 @@ export default function ModalAddTask({ onClose, onAddTask }) {
     <div className={classes.overlay} onClick={onClose}>
       <div className={classes.modal} onClick={(e) => e.stopPropagation()}>
         <div className={classes.header}>
-          <h2>Добавить новую задачу</h2>
+          {type === "add" ? (
+            <h2>Добавить новую задачу</h2>
+          ) : (
+            <h2>Редактирование задачи</h2>
+          )}
           <button className={classes.closeButton} onClick={onClose}>
             ×
           </button>
@@ -68,7 +81,7 @@ export default function ModalAddTask({ onClose, onAddTask }) {
             placeholder='Введите название задачи'
             value={formData.title}
             onChange={(e) => {
-              setFormData((prev) => ({ ...prev, title: e.target.value }));
+              changeForm(FORM_KEY.title, e.target.value);
             }}
           />
         </section>
@@ -78,12 +91,9 @@ export default function ModalAddTask({ onClose, onAddTask }) {
             type='text'
             placeholder='Опишите задачу как можно подробнее'
             value={formData.description}
-            onChange={(e) =>
-              setFormData((prev) => ({
-                ...prev,
-                description: e.target.value,
-              }))
-            }
+            onChange={(e) => {
+              changeForm(FORM_KEY.description, e.target.value);
+            }}
           />
         </section>
 
@@ -92,9 +102,9 @@ export default function ModalAddTask({ onClose, onAddTask }) {
             <h1>Приоритет</h1>
             <select
               value={formData.priority}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, priority: e.target.value }))
-              }
+              onChange={(e) => {
+                changeForm(FORM_KEY.priority, e.target.value);
+              }}
             >
               <option value='low'>Низкий</option>
               <option value='medium'>Средний</option>
@@ -108,9 +118,9 @@ export default function ModalAddTask({ onClose, onAddTask }) {
             <input
               type='date'
               value={formData.dueDate}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, dueDate: e.target.value }))
-              }
+              onChange={(e) => {
+                changeForm(FORM_KEY.dueDate, e.target.value);
+              }}
             />
           </div>
         </section>
@@ -140,12 +150,9 @@ export default function ModalAddTask({ onClose, onAddTask }) {
               <div key={`tag-${tag}`}>
                 #{tag}{" "}
                 <button
-                  onClick={() =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      tags: prev.tags.filter((tagFilter) => tagFilter !== tag),
-                    }))
-                  }
+                  onClick={() => {
+                    deleteFromTheArray(FORM_KEY.tags, tag);
+                  }}
                 >
                   x
                 </button>
@@ -166,10 +173,7 @@ export default function ModalAddTask({ onClose, onAddTask }) {
                   e.preventDefault();
                   const value = subtaskRef.current.value.trim();
                   if (value) {
-                    setFormData((prev) => ({
-                      ...prev,
-                      subtasks: [...prev.subtasks, value],
-                    }));
+                    changeForm(FORM_KEY.subtasks, value);
                     subtaskRef.current.value = "";
                   }
                 }
@@ -182,10 +186,7 @@ export default function ModalAddTask({ onClose, onAddTask }) {
               onClick={() => {
                 const value = subtaskRef.current.value.trim();
                 if (value) {
-                  setFormData((prev) => ({
-                    ...prev,
-                    subtasks: [...prev.subtasks, value],
-                  }));
+                  changeForm(FORM_KEY.subtasks, value);
                   subtaskRef.current.value = "";
                 }
               }}
@@ -196,24 +197,23 @@ export default function ModalAddTask({ onClose, onAddTask }) {
           <div className={classes.subtasksList}>
             {formData.subtasks.map((subtask, index) => (
               <div
-                key={`${index}-${subtask.slice(0, 5)}`}
+                key={
+                  type === "edit"
+                    ? `edit-${index}-${subtask.title || subtask}`
+                    : `${index}-${subtask.slice(0, 5)}`
+                }
                 className={classes.subtaskItem}
               >
                 <div>
                   <span>Подзадача № {index + 1}</span>
-                  <span>{subtask}</span>
+                  <span>{type === "edit" ? subtask.title : subtask}</span>
                 </div>
 
                 <button
                   type='button'
-                  onClick={() =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      subtasks: prev.subtasks.filter(
-                        (subtask, i) => i !== index
-                      ),
-                    }))
-                  }
+                  onClick={() => {
+                    deleteFromTheArray(FORM_KEY.subtasks, subtask);
+                  }}
                   className={classes.removeButton}
                 >
                   ×
@@ -233,12 +233,15 @@ export default function ModalAddTask({ onClose, onAddTask }) {
           <button
             type='button'
             className={classes.cancelButton}
-            onClick={onClose}
+            onClick={() => {
+              resetForm();
+              onClose();
+            }}
           >
             Отмена
           </button>
           <button onClick={addNewTask} className={classes.submitButton}>
-            Создать задачу
+            {type === "edit" ? "Редактировать" : "Создать задачу"}
           </button>
         </section>
       </div>

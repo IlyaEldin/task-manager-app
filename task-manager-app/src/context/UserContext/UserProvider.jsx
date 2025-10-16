@@ -8,6 +8,25 @@ export default function UserProvider({ children }) {
   const [globalSearch, setGlobalSearch] = useState("");
   const [searchEnabled, setSearchEnabled] = useState(true);
 
+  const [formDataCache, setFormDataCache] = useState(() => {
+    try {
+      const saved = localStorage.getItem("formData");
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch (error) {
+      console.error("Ошибка при чтении кэша формы из localStorage:", error);
+    }
+    return {
+      title: "",
+      description: "",
+      priority: "medium",
+      dueDate: "",
+      tags: [],
+      subtasks: [],
+    };
+  });
+
   useEffect(() => {
     const token = authService.getToken();
     if (token) {
@@ -69,6 +88,8 @@ export default function UserProvider({ children }) {
     setGlobalSearch,
     searchEnabled,
     setSearchEnabled: setSearchEnabledWithSave,
+    formDataCache,
+    setFormDataCache,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

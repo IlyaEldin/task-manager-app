@@ -65,28 +65,31 @@ export default function Tasks() {
       <h1>Все задачи</h1>
 
       <div className={classes.controls}>
-        <select
-          value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value)}
-          className={classes.filter}
-        >
-          <option value='all'>Все статусы</option>
-          <option value='pending'>Ожидает</option>
-          <option value='in-progress'>В работе</option>
-          <option value='completed'>Выполнено</option>
-        </select>
-
-        <select
-          value={filterPriority}
-          onChange={(e) => setFilterPriority(e.target.value)}
-          className={classes.filter}
-        >
-          <option value='all'>Все приоритеты</option>
-          <option value='low'>Низкий</option>
-          <option value='medium'>Средний</option>
-          <option value='high'>Высокий</option>
-          <option value='urgent'>Срочный</option>
-        </select>
+        <div className={classes.selectContainer}>
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            className={classes.filter}
+          >
+            <option value='all'>Все статусы</option>
+            <option value='pending'>Ожидает</option>
+            <option value='in-progress'>В работе</option>
+            <option value='completed'>Выполнено</option>
+          </select>
+        </div>
+        <div className={classes.selectContainer}>
+          <select
+            value={filterPriority}
+            onChange={(e) => setFilterPriority(e.target.value)}
+            className={classes.filter}
+          >
+            <option value='all'>Все приоритеты</option>
+            <option value='low'>Низкий</option>
+            <option value='medium'>Средний</option>
+            <option value='high'>Высокий</option>
+            <option value='urgent'>Срочный</option>
+          </select>
+        </div>
       </div>
 
       {filteredTasks.length !== allTasks.length && (
@@ -136,6 +139,7 @@ export default function Tasks() {
               task={task}
               onUpdate={updateTask}
               onDelete={deleteTask}
+              updateTask={updateTask}
             />
           ))
         )}

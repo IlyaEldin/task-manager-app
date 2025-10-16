@@ -32,7 +32,7 @@ export default function AuthForm({ onLogin, onRegister, isLoading }) {
 
   return (
     <div className={classes.container}>
-      <div className={classes.form}>
+      <form onSubmit={registerLogin} className={classes.form}>
         <h1>{isLogin ? "Вход" : "Регистрация"}</h1>
         <input
           type='text'
@@ -59,6 +59,7 @@ export default function AuthForm({ onLogin, onRegister, isLoading }) {
         )}
         {error && <div className={classes.error}>{error}</div>}
         <button
+          type='submit'
           className={classes.submitButton}
           disabled={isLoading}
           onClick={registerLogin}
@@ -71,7 +72,7 @@ export default function AuthForm({ onLogin, onRegister, isLoading }) {
         >
           {isLogin ? "Нет аккаунта? Зарегистрироваться" : "Есть аккаунт? Войти"}
         </button>
-      </div>
+      </form>
     </div>
   );
 }

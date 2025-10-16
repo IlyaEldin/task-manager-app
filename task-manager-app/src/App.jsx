@@ -7,6 +7,7 @@ import Tasks from "./components/Tasks/Tasks";
 import Settings from "./components/Settings/Settings";
 import AuthForm from "./components/AuthForm/AuthForm";
 import { Navigate } from "react-router-dom";
+import AccountPage from "./components/AccountPage/AccountPage";
 
 function App() {
   const { isAuthenticated, isLoading, login, register } =
@@ -24,8 +25,7 @@ function App() {
             <Route path='tasks' element={<Tasks />} />
             <Route path='home' element={<Home />} />
             <Route path='settings' element={<Settings />} />
-
-            <Route path='' element={<Navigate to='/home' replace />} />
+            <Route path='' element={<AccountPage />} />
             <Route path='*' element={<Navigate to='/home' replace />} />
           </Route>
         ) : (

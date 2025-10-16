@@ -296,7 +296,8 @@
 
 .priorityAndDate select,
 input,
-input::checkmark {
+input::checkmark,
+textarea {
   color: var(--black);
 }
 .priorityAndDate input[type="date"]::-webkit-calendar-picker-indicator {

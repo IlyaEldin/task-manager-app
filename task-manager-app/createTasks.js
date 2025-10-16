@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { API_CONFIG } from './src/services/api-config'
 
 const createSampleTasks = async (token) => {
@@ -140,34 +141,23 @@ const createSampleTasks = async (token) => {
     const baseURL = API_CONFIG.BASE_URL;
 
     try {
-        console.log('Начинаем создание задач...');
-        console.log('Сегодняшняя дата:', today.toISOString().split('T')[0]);
 
         for (let i = 0; i < sampleTasks.length; i++) {
             const task = sampleTasks[i];
 
-            const response = await fetch(`${baseURL}/tasks`, {
-                method: 'POST',
+            await axios.post(`${baseURL}/tasks`, task, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify(task)
+
             });
 
-            if (!response.ok) {
-                throw new Error(`Ошибка при создании задачи ${i + 1}: ${response.statusText}`);
-            }
-
-            const result = await response.json();
-            console.log(`✅ Задача ${i + 1} создана:`, result.title, `(до ${task.dueDate})`);
-
-            await new Promise(resolve => setTimeout(resolve, 100));
         }
-
-        console.log('🎉 Все 10 задач успешно созданы!');
+        alert('Все 10 задач успешно созданы!')
     } catch (error) {
         console.error('❌ Ошибка:', error.message);
+        alert('Ошибка при создании задач')
     }
 };
 

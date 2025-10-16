@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classes from "./Task.module.css";
+import ModalAddTask from "../ModalAddTask/ModalAddTask";
+import ModalPortal from "../ModalPortal/ModalPortal";
 import TaskModal from "../TaskModal/TaskModal";
 import {
   getStatusColor,
@@ -11,15 +13,38 @@ import {
 } from "../../utils/taskutils";
 import { formatCreatedAt, formatDueDate } from "../../utils/dateutils";
 
-export default function Task({ task, onUpdate, onDelete }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+export default function Task({ task, onUpdate, onDelete, updateTask }) {
+  const [isModalOpen, setIsModalOpen] = useState({
+    taskStatus: false,
+    updateStatus: false,
+    editStatus: false,
+  });
   const progressPercentage = getPercentage(task.subtasks || []);
+
+  useEffect(() => {
+    let timeoutId;
+
+    function editStatusClose() {
+      setIsModalOpen((prev) => ({ ...prev, editStatus: false }));
+    }
+
+    if (isModalOpen.editStatus) {
+      timeoutId = setTimeout(editStatusClose, 2000);
+    }
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [isModalOpen.editStatus]);
 
   return (
     <>
       <div
         className={classes.container}
-        onClick={() => setIsModalOpen(true)}
+        onClick={() =>
+          setIsModalOpen((prev) => ({ ...prev, taskStatus: true }))
+        }
         style={{ cursor: "pointer" }}
       >
         <p
@@ -72,15 +97,53 @@ export default function Task({ task, onUpdate, onDelete }) {
             </div>
           </div>
         </div>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsModalOpen((prev) => ({ ...prev, updateStatus: true }));
+          }}
+          className={classes.updBtn}
+        >
+          Редактировать
+        </button>
       </div>
 
-      {isModalOpen && (
-        <TaskModal
-          task={task}
-          onClose={() => setIsModalOpen(false)}
-          onUpdate={onUpdate}
-          onDelete={onDelete}
-        />
+      {isModalOpen.updateStatus && (
+        <ModalPortal>
+          <ModalAddTask
+            onClose={() => {
+              setIsModalOpen((prev) => ({
+                ...prev,
+                editStatus: true,
+                updateStatus: false,
+              }));
+            }}
+            task={task}
+            type='edit'
+            updateTask={updateTask}
+          />
+        </ModalPortal>
+      )}
+
+      {isModalOpen.taskStatus && (
+        <ModalPortal>
+          <TaskModal
+            task={task}
+            onClose={() =>
+              setIsModalOpen((prev) => ({ ...prev, taskStatus: false }))
+            }
+            onUpdate={onUpdate}
+            onDelete={onDelete}
+          />
+        </ModalPortal>
+      )}
+
+      {isModalOpen.editStatus && (
+        <ModalPortal>
+          <div className={classes.success}>
+            <div>Задача успешно отредактирована</div>
+          </div>
+        </ModalPortal>
       )}
     </>
   );

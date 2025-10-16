@@ -6,6 +6,7 @@ import ModalPortal from "../ModalPortal/ModalPortal";
 import ModalAddTask from "../ModalAddTask/ModalAddTask";
 import { useDebounce } from "../../hooks/useDebounce";
 import { useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export default function Header() {
   const location = useLocation();
@@ -61,8 +62,11 @@ export default function Header() {
       )}
 
       <div className={classes.profileSection}>
-        <div className={classes.avatar}>{user.name[0].toUpperCase()}</div>
-        <div className={classes.name}>{user.name}</div>
+        <NavLink to={"/"}>
+          <div className={classes.avatar}>{user.name[0].toUpperCase()}</div>
+          <div className={classes.name}>{user.name}</div>
+        </NavLink>
+
         <button onClick={logout} className={classes.logoutButton}>
           Выйти
         </button>

@@ -1,4 +1,3 @@
-/* Settings.module.css */
 .settings {
   width: 95%;
   max-width: 600px;
@@ -55,12 +54,13 @@
   background-color: var(--btn-primary);
   margin-right: 1rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 2rem;
-  width: 5rem;
-  height: 5rem;
+  width: 4rem;
+  height: 4rem;
+  padding-bottom: 0.4rem;
 }
 
 .settingItem button:hover {

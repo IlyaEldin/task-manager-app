@@ -63,6 +63,7 @@
   height: 30px;
   opacity: 0.5;
   margin-right: 0.5rem;
+  filter: var(--svg-invert);
 }
 
 .search input {
@@ -102,4 +103,12 @@
   background: var(--gray-light);
   color: var(--text-primary);
   border-color: var(--blue);
+}
+.profileSection a {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }

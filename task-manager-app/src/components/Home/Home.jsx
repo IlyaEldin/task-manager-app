@@ -80,6 +80,7 @@ export default function Home() {
               task={task}
               onUpdate={updateTask}
               onDelete={deleteTask}
+              updateTask={updateTask}
             />
           ))
         )}
