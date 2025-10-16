@@ -1,5 +1,4 @@
 .container {
-  width: 95%;
   margin: 0 auto;
   background: var(--bg-primary);
 }
@@ -38,7 +37,7 @@
   outline: none;
 }
 
-.filter .info {
+.info {
   padding: 10px 15px;
   background: var(--bg-secondary);
   border-radius: 6px;

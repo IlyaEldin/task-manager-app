@@ -62,7 +62,7 @@ export default function Tasks() {
 
   return (
     <div className={classes.container}>
-      <h1>Все задачи</h1>
+      <h1>Ваши задачи</h1>
 
       <div className={classes.controls}>
         <div className={classes.selectContainer}>
@@ -74,7 +74,7 @@ export default function Tasks() {
             <option value='all'>Все статусы</option>
             <option value='pending'>Ожидает</option>
             <option value='in-progress'>В работе</option>
-            <option value='completed'>Выполнено</option>
+            <option value='completed'>Выполнена</option>
           </select>
         </div>
         <div className={classes.selectContainer}>

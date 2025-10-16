@@ -3,10 +3,14 @@ import { useContext } from "react";
 import classes from "./Settings.module.css";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 import createSampleTasks from "../../../createTasks";
+import ModalPortal from "../ModalPortal/ModalPortal";
+import ModalStatus from "../ModalStatus/ModalStatus";
+import useModal from "../../hooks/useModal";
 
 export default function Settings() {
   const { searchEnabled, setSearchEnabled } = useContext(UserContext);
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const { isModalOpen, openModal } = useModal();
 
   return (
     <div className={classes.settings}>
@@ -45,7 +49,10 @@ export default function Settings() {
       <div className={classes.settingItem}>
         <label className={classes.label}>
           <button
-            onClick={() => createSampleTasks(localStorage.getItem("token"))}
+            onClick={() => {
+              const result = createSampleTasks(localStorage.getItem("token"));
+              result && openModal("editStatus");
+            }}
           >
             <span>+</span>
           </button>
@@ -55,6 +62,12 @@ export default function Settings() {
           Добавляет 10 тестовых задач на ваш аккаунт
         </p>
       </div>
+
+      {isModalOpen.editStatus && (
+        <ModalPortal>
+          <ModalStatus>Задачи добавлены</ModalStatus>
+        </ModalPortal>
+      )}
     </div>
   );
 }
