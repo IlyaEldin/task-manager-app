@@ -154,3 +154,8 @@
 .btn:hover {
   transform: rotateY(-10px);
 }
+
+.selectActive {
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--btn-primary-hover);
+}

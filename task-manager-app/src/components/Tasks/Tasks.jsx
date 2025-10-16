@@ -124,7 +124,11 @@ export default function Tasks() {
           </div>
 
           <button
-            className={classes.btn}
+            className={
+              selectStatus
+                ? `${classes.btn} ${classes.selectActive}`
+                : `${classes.btn}`
+            }
             onClick={() => setSelectStatus((prev) => !prev)}
           >
             Выделить
@@ -133,12 +137,19 @@ export default function Tasks() {
             <button
               className={classes.btn}
               onClick={() => {
-                const result = deleteSelectedTasks(selected);
-                if (result) {
-                  setResultSelectedDelete(true);
-                  openModal("editStatus");
+                const confirm = window.confirm(
+                  `Уверены, что хотите удалить задачи (${selected.length})? `
+                );
+                if (confirm) {
+                  const result = deleteSelectedTasks(selected);
+                  if (result) {
+                    setResultSelectedDelete(true);
+                    openModal("editStatus");
+                  } else {
+                    setResultSelectedDelete(false);
+                  }
                 } else {
-                  setResultSelectedDelete(false);
+                  return;
                 }
               }}
             >
