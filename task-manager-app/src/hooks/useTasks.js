@@ -1,11 +1,15 @@
 import { useState, useCallback, useMemo } from 'react';
 import { taskService } from '../services/taskService';
+import { ModalContext } from '../context/ModalContext/ModalContext';
+import { useContext } from 'react';
 
 export function useTasks() {
     const [tasks, setTasks] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
+    const context = useContext(ModalContext);
+
 
     const filteredTasks = useMemo(() => {
         if (!searchQuery) return tasks;
@@ -49,11 +53,16 @@ export function useTasks() {
         try {
             await taskService.updateTask(updatedTask);
             setTasks(prev => prev.map(task => task.id === updatedTask.id ? updatedTask : task));
+
+            if (context.activeTask.id === updatedTask.id) {
+                context.updateActiveTask(updatedTask);
+            } // обновляем для модальных окон активный таск
+
         } catch (error) {
             console.error("Ошибка при обновлении задачи:", error.message);
             throw error;
         }
-    }, []);
+    }, [context]);
 
     const deleteTask = useCallback(async (taskId) => {
         try {

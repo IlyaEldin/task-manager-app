@@ -141,7 +141,7 @@ const createSampleTasks = async (token) => {
   const baseURL = API_CONFIG.BASE_URL;
 
   try {
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 5; i++) {
       const task = sampleTasks[i];
 
       await axios.post(`${baseURL}/tasks`, task, {

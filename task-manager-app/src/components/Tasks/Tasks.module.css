@@ -22,6 +22,7 @@
   border-radius: 6px;
   background: var(--bg-primary);
   color: var(--text-primary);
+  animation: pushfil 0.4s ease-in-out;
   font-size: 1rem;
 }
 
@@ -30,7 +31,17 @@
   padding-right: 0.75rem;
   padding-left: 0.25rem;
   border-radius: 12px;
+  animation: pushfil 0.4s ease-in-out;
   border: 1px solid var(--text-light);
+}
+
+@keyframes pushfil {
+  0% {
+    transform: translateX(-10%);
+  }
+  100% {
+    transform: translateX(0px);
+  }
 }
 
 .filter:focus {
@@ -52,6 +63,17 @@
   gap: 2rem;
   margin: auto;
   justify-content: start;
+
+  animation: push 0.4s ease-in-out;
+}
+
+@keyframes push {
+  0% {
+    transform: translateX(-10%);
+  }
+  100% {
+    transform: translateX(0px);
+  }
 }
 
 .empty {

@@ -1,7 +1,4 @@
 import classes from "./Task.module.css";
-import ModalAddTask from "../ModalAddTask/ModalAddTask";
-import ModalPortal from "../ModalPortal/ModalPortal";
-import TaskModal from "../TaskModal/TaskModal";
 import {
   getStatusColor,
   getProgressColor,
@@ -11,11 +8,11 @@ import {
   getPriorityText,
 } from "../../utils/taskutils";
 import { formatCreatedAt, formatDueDate } from "../../utils/dateutils";
-import ModalStatus from "../ModalStatus/ModalStatus";
-import useModal from "../../hooks/useModal";
+import { useContext } from "react";
+import { ModalContext } from "../../context/ModalContext/ModalContext";
 
-export default function Task({ task, onUpdate, onDelete, updateTask }) {
-  const { openModal, closeModal, isModalOpen } = useModal();
+export default function Task({ task }) {
+  const { openModal, setActiveTask } = useContext(ModalContext);
 
   const progressPercentage = getPercentage(task.subtasks || []);
 
@@ -23,7 +20,9 @@ export default function Task({ task, onUpdate, onDelete, updateTask }) {
     <>
       <div
         className={classes.container}
-        onClick={() => openModal("taskStatus")}
+        onClick={() => {
+          setActiveTask(task), openModal("taskStatus");
+        }}
         style={{ cursor: "pointer" }}
       >
         <p
@@ -86,37 +85,6 @@ export default function Task({ task, onUpdate, onDelete, updateTask }) {
           Редактировать
         </button>
       </div>
-
-      {isModalOpen.updateStatus && (
-        <ModalPortal>
-          <ModalAddTask
-            onClose={() => {
-              closeModal("updateStatus");
-              openModal("editStatus");
-            }}
-            task={task}
-            type='edit'
-            updateTask={updateTask}
-          />
-        </ModalPortal>
-      )}
-
-      {isModalOpen.taskStatus && (
-        <ModalPortal>
-          <TaskModal
-            task={task}
-            onClose={() => closeModal("taskStatus")}
-            onUpdate={onUpdate}
-            onDelete={onDelete}
-          />
-        </ModalPortal>
-      )}
-
-      {isModalOpen.editStatus && (
-        <ModalPortal>
-          <ModalStatus>Задача успешно отредактирована</ModalStatus>
-        </ModalPortal>
-      )}
     </>
   );
 }

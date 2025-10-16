@@ -5,14 +5,17 @@ import App from "./App.jsx";
 import UserProvider from "./context/UserContext/UserProvider.jsx";
 import ThemeProvider from "./context/ThemeContext/ThemeProvider.jsx";
 import { TasksProvider } from "./context/TasksContext/TasksProvider.jsx";
+import { ModalProvider } from "./context/ModalContext/ModalProvider.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider>
       <UserProvider>
-        <TasksProvider>
-          <App />
-        </TasksProvider>
+        <ModalProvider>
+          <TasksProvider>
+            <App />
+          </TasksProvider>
+        </ModalProvider>
       </UserProvider>
     </ThemeProvider>
   </StrictMode>

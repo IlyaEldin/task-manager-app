@@ -2,6 +2,14 @@ import { useState, useEffect } from "react";
 
 export default function useModal() {
 
+
+    const [activeTask, setActiveTask] = useState(null);
+
+    const updateActiveTask = (updatedTask) => {
+        setActiveTask(updatedTask);
+    };
+
+
     const [isModalOpen, setIsModalOpen] = useState({
         taskStatus: false,
         updateStatus: false,
@@ -35,5 +43,5 @@ export default function useModal() {
         setIsModalOpen((prev) => ({ ...prev, [type]: false }))
     };
 
-    return { openModal, closeModal, isModalOpen }
+    return { openModal, closeModal, isModalOpen, activeTask, setActiveTask, updateActiveTask }
 }

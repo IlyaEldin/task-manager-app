@@ -4,8 +4,16 @@ import { useEffect, useState, useContext, useMemo } from "react";
 import { UserContext } from "../../context/UserContext/UserContext";
 import { useTasksContext } from "../../context/TasksContext/TasksContext";
 import { getStatusText, getPriorityText } from "../../utils/taskutils";
+import { ModalContext } from "../../context/ModalContext/ModalContext";
+import ModalPortal from "../ModalPortal/ModalPortal";
+import ModalStatus from "../ModalStatus/ModalStatus";
+import TaskModal from "../TaskModal/TaskModal";
+import ModalAddTask from "../ModalAddTask/ModalAddTask";
 
 export default function Tasks() {
+  const { openModal, closeModal, isModalOpen, activeTask, setActiveTask } =
+    useContext(ModalContext);
+
   const { globalSearch, setGlobalSearch } = useContext(UserContext);
   const {
     tasks,
@@ -20,6 +28,15 @@ export default function Tasks() {
 
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterPriority, setFilterPriority] = useState("all");
+
+  useEffect(() => {
+    if (activeTask) {
+      const updatedTask = tasks.find((t) => t.id === activeTask.id);
+      if (updatedTask) {
+        setActiveTask(updatedTask);
+      }
+    }
+  }, [tasks, activeTask, setActiveTask]);
 
   useEffect(() => {
     setSearch(globalSearch);
@@ -144,6 +161,38 @@ export default function Tasks() {
           ))
         )}
       </div>
+
+      {isModalOpen.updateStatus && (
+        <ModalPortal>
+          <ModalAddTask
+            onClose={() => {
+              closeModal("updateStatus");
+              openModal("editStatus");
+            }}
+            task={activeTask}
+            type='edit'
+            updateTask={updateTask}
+          />
+        </ModalPortal>
+      )}
+
+      {isModalOpen.taskStatus && (
+        <ModalPortal>
+          <TaskModal
+            task={activeTask}
+            onClose={() => closeModal("taskStatus")}
+            onUpdate={updateTask}
+            onDelete={deleteTask}
+            updateTask={updateTask}
+          />
+        </ModalPortal>
+      )}
+
+      {isModalOpen.editStatus && (
+        <ModalPortal>
+          <ModalStatus>Задача успешно отредактирована</ModalStatus>
+        </ModalPortal>
+      )}
     </div>
   );
 }

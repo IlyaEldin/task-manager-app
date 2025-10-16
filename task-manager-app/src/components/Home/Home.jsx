@@ -3,8 +3,16 @@ import Task from "../Task/Task";
 import { useEffect, useContext } from "react";
 import { UserContext } from "../../context/UserContext/UserContext";
 import { useTasksContext } from "../../context/TasksContext/TasksContext";
+import { ModalContext } from "../../context/ModalContext/ModalContext";
+import ModalPortal from "../ModalPortal/ModalPortal";
+import ModalStatus from "../ModalStatus/ModalStatus";
+import TaskModal from "../TaskModal/TaskModal";
+import ModalAddTask from "../ModalAddTask/ModalAddTask";
 
 export default function Home() {
+  const { openModal, closeModal, isModalOpen, activeTask } =
+    useContext(ModalContext);
+
   const { globalSearch, setGlobalSearch } = useContext(UserContext);
   const {
     tasks,
@@ -85,6 +93,38 @@ export default function Home() {
           ))
         )}
       </div>
+
+      {isModalOpen.updateStatus && (
+        <ModalPortal>
+          <ModalAddTask
+            onClose={() => {
+              closeModal("updateStatus");
+              openModal("editStatus");
+            }}
+            task={activeTask}
+            type='edit'
+            updateTask={updateTask}
+          />
+        </ModalPortal>
+      )}
+
+      {isModalOpen.taskStatus && (
+        <ModalPortal>
+          <TaskModal
+            task={activeTask}
+            onClose={() => closeModal("taskStatus")}
+            onUpdate={updateTask}
+            onDelete={deleteTask}
+            updateTask={updateTask}
+          />
+        </ModalPortal>
+      )}
+
+      {isModalOpen.editStatus && (
+        <ModalPortal>
+          <ModalStatus>Задача успешно отредактирована</ModalStatus>
+        </ModalPortal>
+      )}
     </>
   );
 }
