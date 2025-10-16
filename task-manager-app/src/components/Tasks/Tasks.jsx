@@ -14,6 +14,10 @@ export default function Tasks() {
   const { openModal, closeModal, isModalOpen, activeTask, setActiveTask } =
     useContext(ModalContext);
 
+  const [selectStatus, setSelectStatus] = useState(false); //стоит ли выделение
+  const [selected, setSelected] = useState([]); //массив выбранных
+  const [resultSelectedDelete, setResultSelectedDelete] = useState(false);
+
   const { globalSearch, setGlobalSearch } = useContext(UserContext);
   const {
     tasks,
@@ -24,10 +28,20 @@ export default function Tasks() {
     updateTask,
     deleteTask,
     setSearch,
+    deleteSelectedTasks,
   } = useTasksContext();
 
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterPriority, setFilterPriority] = useState("all");
+
+  useEffect(() => {
+    if (resultSelectedDelete) {
+      const timer = setTimeout(() => {
+        setResultSelectedDelete(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [resultSelectedDelete]);
 
   useEffect(() => {
     if (activeTask) {
@@ -79,33 +93,58 @@ export default function Tasks() {
 
   return (
     <div className={classes.container}>
-      <h1>Ваши задачи</h1>
+      <div className={classes.sticky}>
+        <h1>Ваши задачи</h1>
 
-      <div className={classes.controls}>
-        <div className={classes.selectContainer}>
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className={classes.filter}
+        <div className={classes.controls}>
+          <div className={classes.selectContainer}>
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className={classes.filter}
+            >
+              <option value='all'>Все статусы</option>
+              <option value='pending'>Ожидает</option>
+              <option value='in-progress'>В работе</option>
+              <option value='completed'>Выполнена</option>
+            </select>
+          </div>
+          <div className={classes.selectContainer}>
+            <select
+              value={filterPriority}
+              onChange={(e) => setFilterPriority(e.target.value)}
+              className={classes.filter}
+            >
+              <option value='all'>Все приоритеты</option>
+              <option value='low'>Низкий</option>
+              <option value='medium'>Средний</option>
+              <option value='high'>Высокий</option>
+              <option value='urgent'>Срочный</option>
+            </select>
+          </div>
+
+          <button
+            className={classes.btn}
+            onClick={() => setSelectStatus((prev) => !prev)}
           >
-            <option value='all'>Все статусы</option>
-            <option value='pending'>Ожидает</option>
-            <option value='in-progress'>В работе</option>
-            <option value='completed'>Выполнена</option>
-          </select>
-        </div>
-        <div className={classes.selectContainer}>
-          <select
-            value={filterPriority}
-            onChange={(e) => setFilterPriority(e.target.value)}
-            className={classes.filter}
-          >
-            <option value='all'>Все приоритеты</option>
-            <option value='low'>Низкий</option>
-            <option value='medium'>Средний</option>
-            <option value='high'>Высокий</option>
-            <option value='urgent'>Срочный</option>
-          </select>
+            Выделить
+          </button>
+          {selectStatus && (
+            <button
+              className={classes.btn}
+              onClick={() => {
+                const result = deleteSelectedTasks(selected);
+                if (result) {
+                  setResultSelectedDelete(true);
+                  openModal("editStatus");
+                } else {
+                  setResultSelectedDelete(false);
+                }
+              }}
+            >
+              Удалить
+            </button>
+          )}
         </div>
       </div>
 
@@ -152,11 +191,10 @@ export default function Tasks() {
         ) : (
           filteredTasks.map((task) => (
             <Task
+              selectStatus={selectStatus} //стоит ли выделение
+              setSelected={setSelected} //для добавления в массив id удаленич
               key={task.id}
               task={task}
-              onUpdate={updateTask}
-              onDelete={deleteTask}
-              updateTask={updateTask}
             />
           ))
         )}
@@ -183,14 +221,17 @@ export default function Tasks() {
             onClose={() => closeModal("taskStatus")}
             onUpdate={updateTask}
             onDelete={deleteTask}
-            updateTask={updateTask}
           />
         </ModalPortal>
       )}
 
       {isModalOpen.editStatus && (
         <ModalPortal>
-          <ModalStatus>Задача успешно отредактирована</ModalStatus>
+          <ModalStatus>
+            {resultSelectedDelete
+              ? "Задачи удалены"
+              : "Задача успешно отредактирована"}
+          </ModalStatus>
         </ModalPortal>
       )}
     </div>

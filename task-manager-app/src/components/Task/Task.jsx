@@ -8,11 +8,12 @@ import {
   getPriorityText,
 } from "../../utils/taskutils";
 import { formatCreatedAt, formatDueDate } from "../../utils/dateutils";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ModalContext } from "../../context/ModalContext/ModalContext";
 
-export default function Task({ task }) {
+export default function Task({ task, selectStatus, setSelected }) {
   const { openModal, setActiveTask } = useContext(ModalContext);
+  const [status, setStatus] = useState(false);
 
   const progressPercentage = getPercentage(task.subtasks || []);
 
@@ -25,13 +26,32 @@ export default function Task({ task }) {
         }}
         style={{ cursor: "pointer" }}
       >
-        <p
-          title='Приоритет'
-          style={{ color: getPriorityColor(task.priority) }}
-          className={classes.priority}
-        >
-          {getPriorityText(task.priority)}
-        </p>
+        <div className={classes.checkboxPriorityContainer}>
+          <p
+            title='Приоритет'
+            style={{ color: getPriorityColor(task.priority) }}
+            className={classes.priority}
+          >
+            {getPriorityText(task.priority)}
+          </p>
+
+          {selectStatus && (
+            <div onClick={(e) => e.stopPropagation()}>
+              <input
+                type='checkbox'
+                checked={status}
+                onChange={() => {
+                  setStatus((prev) => !prev);
+                  setSelected((prev) =>
+                    prev.includes(task.id)
+                      ? prev.filter((id) => id !== task.id)
+                      : [...prev, task.id]
+                  );
+                }}
+              />
+            </div>
+          )}
+        </div>
         <h2>{task.title}</h2>
         <h3 className={classes.tags}>
           {task.tags &&

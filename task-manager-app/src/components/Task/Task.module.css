@@ -128,3 +128,14 @@
 .updBtn:active {
   transform: scale(1);
 }
+
+.checkboxPriorityContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.checkboxPriorityContainer input {
+  width: 1rem;
+  height: 1rem;
+}

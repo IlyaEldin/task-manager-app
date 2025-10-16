@@ -74,6 +74,21 @@ export function useTasks() {
         }
     }, []);
 
+    const deleteSelectedTasks = useCallback(async (ArrayTaskId) => {
+
+        try {
+            for (let i = 0; i < ArrayTaskId.length; i++) {
+                await taskService.deleteTask(ArrayTaskId[i]);
+                setTasks(prev => prev.filter(task => task.id !== ArrayTaskId[i]));
+            }
+        } catch (error) {
+            console.error("Ошибка при удалении задач:", error.message);
+            throw error;
+        }
+        return true;
+    }, []);
+
+
     return {
         tasks: filteredTasks,
         allTasks: tasks,
@@ -84,6 +99,7 @@ export function useTasks() {
         updateTask,
         deleteTask,
         setSearch: setSearchQuery,
+        deleteSelectedTasks,
 
     };
 }
