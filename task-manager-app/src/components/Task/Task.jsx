@@ -40,7 +40,7 @@ export default function Task({
             {getPriorityText(task.priority)}
           </p>
 
-          {selectStatus && (
+          {selectStatus && type !== "view" && (
             <div onClick={(e) => e.stopPropagation()}>
               <input
                 type='checkbox'
