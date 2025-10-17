@@ -10,15 +10,15 @@ export default function Tasks() {
   const stateManager = useTasksFilter();
 
   if (stateManager.isLoading || stateManager.error) {
-    return <TaskStatus stateManager={stateManager} />;
+    return <TaskStatus />;
   }
 
   return (
     <div className={classes.container}>
-      <TasksFilter stateManager={stateManager} />
-      <TasksFilterStatus stateManager={stateManager} />
-      <TasksList stateManager={stateManager} type={"editable"} />
-      <TasksModal stateManager={stateManager} />
+      <TasksFilter />
+      <TasksFilterStatus />
+      <TasksList type={"editable"} />
+      <TasksModal />
     </div>
   );
 }

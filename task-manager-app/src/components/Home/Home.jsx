@@ -8,13 +8,13 @@ export default function Home() {
   const stateManager = useTasksFilter();
 
   if (stateManager.isLoading || stateManager.error) {
-    return <TaskStatus stateManager={stateManager} />;
+    return <TaskStatus />;
   }
 
   return (
     <div className={classes.container}>
-      <TasksList stateManager={stateManager} />
-      <TasksModal stateManager={stateManager} />
+      <TasksList />
+      <TasksModal />
     </div>
   );
 }
