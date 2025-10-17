@@ -1,8 +1,7 @@
 import axios from "axios";
 import { API_CONFIG } from "./src/services/api-config";
-import ModalPortal from "./src/components/ModalPortal/ModalPortal";
 
-const createSampleTasks = async (token) => {
+const createSampleTasks = async (token, fetchTasks) => {
   const today = new Date();
   const getFutureDate = (days) => {
     const date = new Date(today);
@@ -151,6 +150,7 @@ const createSampleTasks = async (token) => {
         },
       });
     }
+    fetchTasks();
     return true;
   } catch (error) {
     console.error("❌ Ошибка:", error.message);

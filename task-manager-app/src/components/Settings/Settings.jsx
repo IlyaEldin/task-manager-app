@@ -6,9 +6,11 @@ import createSampleTasks from "../../../createTasks";
 import ModalPortal from "../ModalPortal/ModalPortal";
 import ModalStatus from "../ModalStatus/ModalStatus";
 import useModal from "../../hooks/useModal";
+import { useTasksContext } from "../../context/TasksContext/TasksContext";
 
 export default function Settings() {
   const { searchEnabled, setSearchEnabled } = useContext(UserContext);
+  const { fetchTasks } = useTasksContext();
   const { theme, toggleTheme } = useContext(ThemeContext);
   const { isModalOpen, openModal } = useModal();
 
@@ -50,7 +52,10 @@ export default function Settings() {
         <label className={classes.label}>
           <button
             onClick={() => {
-              const result = createSampleTasks(localStorage.getItem("token"));
+              const result = createSampleTasks(
+                localStorage.getItem("token"),
+                fetchTasks
+              );
               result && openModal("editStatus");
             }}
           >
