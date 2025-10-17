@@ -1,13 +1,13 @@
-import useTasksFilter from "../../hooks/useTasksFilter";
 import TasksList from "../Tasks/TasksList/TasksList";
 import TasksModal from "../Tasks/TasksModal/TasksModal";
 import TaskStatus from "../Tasks/TaskStatus/TaskStatus";
 import classes from "./Home.module.css";
+import { useTasksContext } from "../../context/TasksContext/TasksContext";
 
 export default function Home() {
-  const stateManager = useTasksFilter();
+  const { isLoading, error } = useTasksContext();
 
-  if (stateManager.isLoading || stateManager.error) {
+  if (isLoading || error) {
     return <TaskStatus />;
   }
 

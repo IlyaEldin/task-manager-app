@@ -1,5 +1,5 @@
+import { useTasksContext } from "../../context/TasksContext/TasksContext";
 import classes from "./Tasks.module.css";
-import useTasksFilter from "../../hooks/useTasksFilter";
 import TasksFilter from "./TasksFilter/TasksFilter";
 import TasksFilterStatus from "./TasksFilterStatus/TasksFilterStatus";
 import TasksList from "./TasksList/TasksList";
@@ -7,9 +7,9 @@ import TasksModal from "./TasksModal/TasksModal";
 import TaskStatus from "./TaskStatus/TaskStatus";
 
 export default function Tasks() {
-  const stateManager = useTasksFilter();
+  const { isLoading, error } = useTasksContext();
 
-  if (stateManager.isLoading || stateManager.error) {
+  if (isLoading || error) {
     return <TaskStatus />;
   }
 
