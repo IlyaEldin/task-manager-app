@@ -1,4 +1,5 @@
 .container {
   margin: 0 auto;
   background: var(--bg-primary);
+  margin-bottom: 2rem;
 }
