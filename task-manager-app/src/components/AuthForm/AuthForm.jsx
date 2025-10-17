@@ -14,6 +14,7 @@ export default function AuthForm({ onLogin, onRegister, isLoading }) {
   const registerLogin = async () => {
     if (!isLogin && password !== confirmPassword) {
       setError("Пароли не совпадают");
+
       return;
     }
 

@@ -1,12 +1,31 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { UserContext } from "./UserContext";
 import { authService } from "../../services/authService";
+import { useTasksContext } from "../TasksContext/TasksContext";
 
 export default function UserProvider({ children }) {
+  const { tasks, setSearch } = useTasksContext();
+
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [globalSearch, setGlobalSearch] = useState("");
   const [searchEnabled, setSearchEnabled] = useState(true);
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [filterPriority, setFilterPriority] = useState("all");
+
+  useEffect(() => {
+    setSearch(globalSearch);
+  }, [globalSearch, setSearch]);
+
+  const filteredTasks = useMemo(() => {
+    return tasks.filter((task) => {
+      const statusMatch =
+        filterStatus === "all" || task.status === filterStatus;
+      const priorityMatch =
+        filterPriority === "all" || task.priority === filterPriority;
+      return statusMatch && priorityMatch;
+    });
+  }, [tasks, filterStatus, filterPriority]);
 
   const [formDataCache, setFormDataCache] = useState(() => {
     try {
@@ -90,6 +109,12 @@ export default function UserProvider({ children }) {
     setSearchEnabled: setSearchEnabledWithSave,
     formDataCache,
     setFormDataCache,
+    filteredTasks,
+    setFilterStatus,
+    setFilterPriority,
+    setSearch,
+    filterPriority,
+    filterStatus,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

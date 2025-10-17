@@ -8,7 +8,7 @@ import {
   getPriorityText,
 } from "../../utils/taskutils";
 import { formatCreatedAt, formatDueDate } from "../../utils/dateutils";
-import { useContext, useState } from "react";
+import { useState, useContext } from "react";
 import { ModalContext } from "../../context/ModalContext/ModalContext";
 
 export default function Task({
@@ -17,7 +17,7 @@ export default function Task({
   setSelected,
   type = "view",
 }) {
-  const { openModal, setActiveTask } = useContext(ModalContext);
+  const { setActiveTask, openModal } = useContext(ModalContext);
   const [status, setStatus] = useState(false);
 
   const progressPercentage = getPercentage(task.subtasks || []);
@@ -110,6 +110,7 @@ export default function Task({
           <button
             onClick={(e) => {
               e.stopPropagation();
+              setActiveTask(task);
               openModal("updateStatus");
             }}
             className={classes.updBtn}

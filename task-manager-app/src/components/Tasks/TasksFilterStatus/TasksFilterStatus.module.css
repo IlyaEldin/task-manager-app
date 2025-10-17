@@ -1,0 +1,8 @@
+.info {
+  padding: 10px 15px;
+  background: var(--bg-secondary);
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}

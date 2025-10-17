@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { taskService } from '../services/taskService';
 import { ModalContext } from '../context/ModalContext/ModalContext';
 import { useContext } from 'react';
@@ -9,6 +9,7 @@ export function useTasks() {
     const [error, setError] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const context = useContext(ModalContext);
+
 
 
     const filteredTasks = useMemo(() => {
@@ -33,6 +34,10 @@ export function useTasks() {
             setIsLoading(false);
         }
     }, []);
+
+    useEffect(() => {
+        fetchTasks();
+    }, [fetchTasks]);
 
     const createTask = useCallback(async (taskData) => {
         try {
@@ -100,6 +105,5 @@ export function useTasks() {
         deleteTask,
         setSearch: setSearchQuery,
         deleteSelectedTasks,
-
     };
 }

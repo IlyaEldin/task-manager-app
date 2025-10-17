@@ -1,20 +1,30 @@
 import { useState, useEffect } from "react";
+import { useTasksContext } from "../context/TasksContext/TasksContext";
 
 export default function useModal() {
 
-
+    const { tasks } = useTasksContext();
+    const [isModalOpen, setIsModalOpen] = useState({
+        taskStatus: false,
+        updateStatus: false,
+        editStatus: false,
+    });
     const [activeTask, setActiveTask] = useState(null);
+
+    useEffect(() => {
+        if (activeTask) {
+            const updatedTask = tasks.find((t) => t.id === activeTask.id);
+            if (updatedTask) {
+                setActiveTask(updatedTask);
+            }
+        }
+    }, [tasks, activeTask, setActiveTask]);
 
     const updateActiveTask = (updatedTask) => {
         setActiveTask(updatedTask);
     };
 
 
-    const [isModalOpen, setIsModalOpen] = useState({
-        taskStatus: false,
-        updateStatus: false,
-        editStatus: false,
-    });
 
     useEffect(() => {
         let timeoutId;

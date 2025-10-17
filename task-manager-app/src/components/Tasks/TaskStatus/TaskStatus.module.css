@@ -1,0 +1,14 @@
+.container {
+  margin: 0 auto;
+  background: var(--bg-primary);
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-primary);
+  background: var(--card-bg);
+  border-radius: 6px;
+  box-shadow: var(--card-shadow);
+}
