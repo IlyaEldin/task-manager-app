@@ -9,17 +9,48 @@ export function useTasks() {
     const [error, setError] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const context = useContext(ModalContext);
+    const [organize, setOrganize] = useState(false);
+    const [sortBy, setSortBy] = useState("newest");
 
 
+    const sortedAndFilteredTasks = useMemo(() => {
+        let result = tasks;
 
-    const filteredTasks = useMemo(() => {
-        if (!searchQuery) return tasks;
-        const query = searchQuery.toLowerCase();
-        return tasks.filter(task =>
-            task.title.toLowerCase().includes(query) ||
-            task.tags.some(tag => tag.toLowerCase().includes(query)) // если тег совпадает
-        );
-    }, [tasks, searchQuery]);
+        if (searchQuery) {
+            const query = searchQuery.toLowerCase();
+            result = result.filter(task =>
+                task.title.toLowerCase().includes(query) ||
+                task.tags.some(tag => tag.toLowerCase().includes(query))
+            );
+        }
+        if (organize) {
+            switch (sortBy) {
+                case "newest":
+                    return [...result].sort((a, b) => new Date(b.createdAt || b.id) - new Date(a.createdAt || a.id));
+                case "oldest":
+                    return [...result].sort((a, b) => new Date(a.createdAt || a.id) - new Date(b.createdAt || b.id));
+                case "priority":
+                    {
+                        const priorityOrder = {
+                            'urgent': 0,
+                            'high': 1,
+                            'medium': 2,
+                            'low': 3
+                        };
+                        return [...result].sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
+                    }
+                case "dueDate":
+                    return [...result].sort((a, b) => {
+                        return new Date(a.dueDate) - new Date(b.dueDate);
+                    });
+                default:
+                    return result;
+            }
+
+        }
+        return result
+    }, [tasks, searchQuery, organize, sortBy]);
+
 
     const fetchTasks = useCallback(async () => {
         try {
@@ -95,7 +126,7 @@ export function useTasks() {
 
 
     return {
-        tasks: filteredTasks,
+        tasks: sortedAndFilteredTasks,
         allTasks: tasks,
         isLoading,
         error,
@@ -105,5 +136,10 @@ export function useTasks() {
         deleteTask,
         setSearch: setSearchQuery,
         deleteSelectedTasks,
+        setTasks,
+        organize,
+        setOrganize,
+        sortBy,
+        setSortBy,
     };
 }

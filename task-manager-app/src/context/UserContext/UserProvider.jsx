@@ -4,7 +4,7 @@ import { authService } from "../../services/authService";
 import { useTasksContext } from "../TasksContext/TasksContext";
 
 export default function UserProvider({ children }) {
-  const { tasks, setSearch } = useTasksContext();
+  const { tasks, setTasks, setSearch, fetchTasks } = useTasksContext();
 
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -56,9 +56,8 @@ export default function UserProvider({ children }) {
     if (savedSearchEnabled !== null) {
       setSearchEnabled(JSON.parse(savedSearchEnabled));
     }
-
     setIsLoading(false);
-  }, []);
+  }, [fetchTasks]);
 
   const setSearchEnabledWithSave = (enabled) => {
     setSearchEnabled(enabled);
@@ -70,6 +69,7 @@ export default function UserProvider({ children }) {
       setIsLoading(true);
       const response = await authService.login(credentials);
       setUser(response.user);
+      await fetchTasks();
       return { success: true };
     } catch (error) {
       return { success: false, error: error.message };
@@ -83,6 +83,7 @@ export default function UserProvider({ children }) {
       setIsLoading(true);
       const response = await authService.register(userData);
       setUser(response.user);
+      await fetchTasks();
       return { success: true };
     } catch (error) {
       return { success: false, error: error.message };
@@ -94,6 +95,7 @@ export default function UserProvider({ children }) {
   const logout = () => {
     authService.logout();
     setUser(null);
+    setTasks([]);
   };
 
   const value = {

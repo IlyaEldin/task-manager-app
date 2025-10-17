@@ -15,7 +15,8 @@ export default function TasksFilter() {
     setSelected,
     setResultSelectedDelete,
   } = useContext(SelectionContext);
-  const { deleteSelectedTasks } = useTasksContext();
+  const { deleteSelectedTasks, organize, setOrganize, sortBy, setSortBy } =
+    useTasksContext();
   const { openModal } = useContext(ModalContext);
 
   return (
@@ -84,6 +85,39 @@ export default function TasksFilter() {
             >
               Удалить
             </button>
+          )}
+          <div className={classes.organizeContainer}>
+            <p>Упорядочить</p>
+
+            <button
+              onClick={() => setOrganize((prev) => !prev)}
+              className={classes.containerSlider}
+              onMouseDown={(e) => e.preventDefault()}
+              tabIndex={-1}
+            >
+              <div
+                className={
+                  !organize
+                    ? `${classes.sliderBall}`
+                    : `${classes.sliderBall} ${classes.sliderBallOn}`
+                }
+              ></div>
+            </button>
+          </div>
+
+          {organize && (
+            <div className={classes.selectContainer}>
+              <select
+                className={classes.filter}
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+              >
+                <option value='newest'>Сначала новые</option>
+                <option value='oldest'>Сначала старые</option>
+                <option value='priority'>По приоритету</option>
+                <option value='dueDate'>По сроку дедлайна</option>
+              </select>
+            </div>
           )}
         </div>
       </div>
