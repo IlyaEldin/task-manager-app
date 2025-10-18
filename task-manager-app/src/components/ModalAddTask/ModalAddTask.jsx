@@ -1,6 +1,7 @@
 import classes from "./ModalAddTask.module.css";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useFormTask, FORM_KEY } from "../../hooks/useFormTask";
+import { ModalContext } from "../../context/ModalContext/ModalContext";
 
 export default function ModalAddTask({
   onClose,
@@ -15,11 +16,15 @@ export default function ModalAddTask({
   const { formData, setFormData, resetForm, changeForm, deleteFromTheArray } =
     useFormTask();
 
+  const { activeTask, updateActiveTask } = useContext(ModalContext);
+
   useEffect(() => {
     if (task) {
       setFormData(task);
     }
   }, [setFormData, task]);
+
+  console.log(formData);
 
   const addNewTask = () => {
     if (!formData.title) {
@@ -45,7 +50,9 @@ export default function ModalAddTask({
         })),
       };
       resetForm();
-      type === "edit" ? updateTask(formData) : onAddTask(newTask);
+      type === "edit"
+        ? updateTask(formData, activeTask, updateActiveTask)
+        : onAddTask(newTask);
       onClose();
     } else {
       setError("Подзадачи обязательны");
