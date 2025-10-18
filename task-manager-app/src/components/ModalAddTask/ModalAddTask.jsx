@@ -24,8 +24,6 @@ export default function ModalAddTask({
     }
   }, [setFormData, task]);
 
-  console.log(formData);
-
   const addNewTask = () => {
     if (!formData.title) {
       setError("Название обязательно");
@@ -37,7 +35,9 @@ export default function ModalAddTask({
       return;
     }
 
-    if (formData.subtasks.length) {
+    if (type === "edit") {
+      updateTask(formData, activeTask, updateActiveTask);
+    } else {
       const newTask = {
         title: formData.title,
         description: formData.description,
@@ -49,15 +49,11 @@ export default function ModalAddTask({
           completed: false,
         })),
       };
-      resetForm();
-      type === "edit"
-        ? updateTask(formData, activeTask, updateActiveTask)
-        : onAddTask(newTask);
-      onClose();
-    } else {
-      setError("Подзадачи обязательны");
-      return;
+      onAddTask(newTask);
     }
+
+    resetForm();
+    onClose();
   };
 
   const handleAddTag = () => {

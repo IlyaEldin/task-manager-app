@@ -56,10 +56,18 @@ export function useFormTask() {
 
   const changePointArray = (point, value) => {
     if (point === FORM_KEY.subtasks) {
+      let lastIdSub = formData.subtasks[formData.subtasks.length - 1].id
+        .toString()
+        .split("-");
+      lastIdSub = [lastIdSub[0], parseInt(lastIdSub[1]) + 1];
+      let newId = `${lastIdSub[0]}-${lastIdSub[1]}`;
+
       const subtaskObj = {
+        id: newId,
         title: value,
         completed: false,
       };
+
       setFormData((prev) => ({
         ...prev,
         [point]: [...prev[point], subtaskObj],

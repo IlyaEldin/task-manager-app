@@ -1,20 +1,26 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import classes from "./TaskModal.module.css";
 import { getPriorityColor, getPriorityText } from "../../utils/taskutils";
+import { ModalContext } from "../../context/ModalContext/ModalContext";
 
 export default function TaskModal({ task, onClose, onUpdate, onDelete }) {
   const [status, setStatus] = useState(task.status);
+  const { activeTask, updateActiveTask } = useContext(ModalContext);
 
   const handleStatusChange = (newStatus) => {
     setStatus(newStatus);
-    onUpdate({ ...task, status: newStatus });
+    onUpdate({ ...task, status: newStatus }, activeTask, updateActiveTask);
   };
 
   const handleSubtaskToggle = (subtaskId) => {
     const updatedSubtasks = task.subtasks.map((st) =>
       st.id === subtaskId ? { ...st, completed: !st.completed } : st
     );
-    onUpdate({ ...task, subtasks: updatedSubtasks });
+    onUpdate(
+      { ...task, subtasks: updatedSubtasks },
+      activeTask,
+      updateActiveTask
+    );
   };
 
   const handleDelete = () => {
