@@ -4,7 +4,7 @@
   gap: 2rem;
   margin: auto;
   justify-content: start;
-
+  padding: 2rem;
   animation: push 0.4s ease-in-out;
 }
 
