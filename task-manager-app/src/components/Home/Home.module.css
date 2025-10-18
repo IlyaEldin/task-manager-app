@@ -2,6 +2,7 @@
   margin: 0 auto;
   background: var(--bg-primary);
   padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .hero {
