@@ -74,7 +74,7 @@ export default function TasksFilter() {
                     setResultSelectedDelete(true);
                     openModal("editStatus");
                     setSelected([]);
-                    selectStatus(false);
+                    setSelectStatus(false);
                   } else {
                     setResultSelectedDelete(false);
                   }
